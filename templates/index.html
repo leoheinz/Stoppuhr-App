@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Stoppuhr</title>
+<style>
+body { font-family: Arial; text-align: center; margin-top: 50px; }
+button { font-size: 20px; margin: 5px; }
+#timer { font-size: 50px; margin: 20px; }
+#laps { margin-top: 20px; }
+</style>
+</head>
+<body>
+<h1>Stoppuhr</h1>
+<div id="timer">0.0</div>
+
+<button onclick="startTimer()">Start</button>
+<button onclick="stopTimer()">Stop</button>
+<button onclick="lapTimer()">Lap</button>
+<button onclick="resetTimer()">Reset</button>
+
+<div id="laps"></div>
+
+<script>
+let timerInterval = null;
+let elapsed = 0;
+
+function updateTimer() {
+    document.getElementById("timer").innerText = elapsed.toFixed(1);
+}
+
+function startTimer() {
+    fetch('/start', {method: 'POST'});
+    if (!timerInterval) {
+        const startTime = Date.now() - elapsed*1000;
+        timerInterval = setInterval(() => {
+            elapsed = (Date.now() - startTime)/1000;
+            updateTimer();
+        }, 100);
+    }
+}
+
+function stopTimer() {
+    fetch('/stop', {method: 'POST'})
+        .then(res => res.json())
+        .then(data => { elapsed = data.elapsed || elapsed; updateTimer(); });
+    clearInterval(timerInterval);
+    timerInterval = null;
+}
+
+function lapTimer() {
+    fetch('/lap', {method: 'POST'})
+        .then(res => res.json())
+        .then(data => {
+            const lapDiv = document.getElementById("laps");
+            const p = document.createElement("p");
+            p.innerText = `Lap ${data.lap_number}: ${data.lap_time.toFixed(1)} s`;
+            lapDiv.appendChild(p);
+        });
+}
+
+function resetTimer() {
+    fetch('/reset', {method: 'POST'});
+    elapsed = 0;
+    updateTimer();
+    clearInterval(timerInterval);
+    timerInterval = null;
+    document.getElementById("laps").innerHTML = '';
+}
+</script>
+</body>
+</html>
