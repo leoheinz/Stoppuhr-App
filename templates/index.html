@@ -2,17 +2,56 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stoppuhr</title>
 <style>
-body { font-family: Arial; text-align: center; margin-top: 50px; }
-button { font-size: 20px; margin: 5px; }
-#timer { font-size: 50px; margin: 20px; }
-#laps { margin-top: 20px; }
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 50px;
+    padding: 0 10px;
+    background-color: #f9f9f9;
+}
+
+button {
+    font-size: 24px;
+    margin: 8px;
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+}
+
+button:active {
+    background-color: #0056b3;
+}
+
+#timer {
+    font-size: 80px;
+    margin: 20px 0;
+}
+
+#laps {
+    margin-top: 20px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+#laps p {
+    font-size: 22px;
+    margin: 4px 0;
+    padding: 4px 8px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+}
 </style>
 </head>
 <body>
 <h1>Stoppuhr</h1>
-<div id="timer">0.0</div>
+<div id="timer">0.00</div>
 
 <button onclick="startTimer()">Start</button>
 <button onclick="stopTimer()">Stop</button>
@@ -23,29 +62,28 @@ button { font-size: 20px; margin: 5px; }
 
 <script>
 let timerInterval = null;
+let startTime = null;
 let elapsed = 0;
 
 function updateTimer() {
-    document.getElementById("timer").innerText = elapsed.toFixed(1);
+    document.getElementById("timer").innerText = elapsed.toFixed(2);
 }
 
 function startTimer() {
-    fetch('/start', {method: 'POST'});
     if (!timerInterval) {
-        const startTime = Date.now() - elapsed*1000;
+        startTime = Date.now() - elapsed*1000;
         timerInterval = setInterval(() => {
             elapsed = (Date.now() - startTime)/1000;
             updateTimer();
-        }, 100);
+        }, 10); // Update alle 10ms für Hundertstel
     }
+    fetch('/start', {method: 'POST'});
 }
 
 function stopTimer() {
-    fetch('/stop', {method: 'POST'})
-        .then(res => res.json())
-        .then(data => { elapsed = data.elapsed || elapsed; updateTimer(); });
     clearInterval(timerInterval);
     timerInterval = null;
+    fetch('/stop', {method: 'POST'});
 }
 
 function lapTimer() {
@@ -54,18 +92,19 @@ function lapTimer() {
         .then(data => {
             const lapDiv = document.getElementById("laps");
             const p = document.createElement("p");
-            p.innerText = `Lap ${data.lap_number}: ${data.lap_time.toFixed(1)} s`;
+            p.innerText = `Lap ${data.lap_number}: ${elapsed.toFixed(2)} s`;
             lapDiv.appendChild(p);
         });
 }
 
 function resetTimer() {
-    fetch('/reset', {method: 'POST'});
-    elapsed = 0;
-    updateTimer();
     clearInterval(timerInterval);
     timerInterval = null;
+    elapsed = 0;
+    updateTimer();
+    startTime = null;
     document.getElementById("laps").innerHTML = '';
+    fetch('/reset', {method: 'POST'});
 }
 </script>
 </body>
