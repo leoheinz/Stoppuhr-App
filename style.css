@@ -69,7 +69,7 @@ body {
     color: #f9fafb;
 }
 
-/* Button-Reihe wie in iOS: links grau, rechts gelb */
+/* Button-Reihe wie in iOS: links grau, rechts gelb/rot */
 .button-row {
     display: flex;
     gap: 16px;
@@ -91,16 +91,23 @@ body {
         background-color 0.15s ease-out,
         color 0.15s ease-out,
         transform 0.08s ease-out,
-        box-shadow 0.08s ease-out;
+        box-shadow 0.08s ease-out,
+        opacity 0.15s ease-out;
+}
+
+/* Disabled-Style wie iOS (leicht transparent) */
+.btn:disabled {
+    opacity: 0.4;
+    cursor: default;
 }
 
 /* iOS-Tap-Effekt */
-.btn:active {
+.btn:active:not(:disabled) {
     transform: scale(0.97);
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
-/* Primär (Start/Stopp) – Gelb wie iOS */
+/* Primär (Start) – Gelb wie iOS */
 .btn-primary {
     background-color: #f5c542;
     color: #000;
@@ -112,7 +119,7 @@ body {
     color: #fff;
 }
 
-/* Sekundär (Zurücksetzen) – Dunkelgrau */
+/* Sekundär (Runde/Zurücksetzen) – Dunkelgrau */
 .btn-secondary {
     background-color: #1c1c1e;
     color: #f9fafb;
@@ -166,14 +173,19 @@ body {
     color: #f9fafb;
 }
 
-.lap-row span:nth-child(2) {
+.lap-row span:nth-child(2),
+.lap-row span:nth-child(3) {
     text-align: right;
     color: #f9fafb;
 }
 
-.lap-row span:nth-child(3) {
-    text-align: right;
-    color: #f9fafb;
+/* schnellste / langsamste Runde wie iOS */
+.lap-fastest {
+    color: #32d74b; /* iOS Grün */
+}
+
+.lap-slowest {
+    color: #ff453a; /* iOS Rot */
 }
 
 /* Scrollbar minimal (nur WebKit) */

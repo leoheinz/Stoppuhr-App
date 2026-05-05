@@ -18,8 +18,8 @@
             <div id="timer" class="time-display">00:00.00</div>
 
             <div class="button-row">
-                <button id="resetBtn" class="btn btn-secondary">Zurücksetzen</button>
-                <button id="startBtn" class="btn btn-primary">Start</button>
+                <button id="leftBtn" class="btn btn-secondary" disabled>Zurücksetzen</button>
+                <button id="rightBtn" class="btn btn-primary">Start</button>
             </div>
 
             <div class="laps-container">
@@ -38,9 +38,10 @@
 let timerInterval = null;
 let startTime = null;
 let elapsed = 0;
-let lapCount = 0;
-let lastLapTime = 0;
 let running = false;
+
+let laps = []; // {index, lapTime, totalTime}
+let lastLapTotal = 0;
 
 function formatTime(t) {
     const minutes = Math.floor(t / 60);
@@ -56,10 +57,16 @@ function updateTimer() {
 function startTimer() {
     if (running) return;
     running = true;
-    const startBtn = document.getElementById("startBtn");
-    startBtn.textContent = "Stopp";
-    startBtn.classList.remove("btn-primary");
-    startBtn.classList.add("btn-danger");
+
+    const rightBtn = document.getElementById("rightBtn");
+    const leftBtn = document.getElementById("leftBtn");
+
+    rightBtn.textContent = "Stopp";
+    rightBtn.classList.remove("btn-primary");
+    rightBtn.classList.add("btn-danger");
+
+    leftBtn.textContent = "Runde";
+    leftBtn.disabled = false;
 
     if (!timerInterval) {
         startTime = Date.now() - elapsed * 1000;
@@ -73,10 +80,16 @@ function startTimer() {
 function stopTimer() {
     if (!running) return;
     running = false;
-    const startBtn = document.getElementById("startBtn");
-    startBtn.textContent = "Start";
-    startBtn.classList.remove("btn-danger");
-    startBtn.classList.add("btn-primary");
+
+    const rightBtn = document.getElementById("rightBtn");
+    const leftBtn = document.getElementById("leftBtn");
+
+    rightBtn.textContent = "Start";
+    rightBtn.classList.remove("btn-danger");
+    rightBtn.classList.add("btn-primary");
+
+    leftBtn.textContent = "Zurücksetzen";
+    leftBtn.disabled = false;
 
     clearInterval(timerInterval);
     timerInterval = null;
@@ -90,53 +103,103 @@ function toggleStartStop() {
     }
 }
 
-function lapTimer() {
-    if (!running) return;
+function addLap() {
+    const totalTime = elapsed;
+    const lapTime = totalTime - lastLapTotal;
+    lastLapTotal = totalTime;
 
-    lapCount += 1;
+    const index = laps.length + 1;
+    laps.push({ index, lapTime, totalTime });
 
-    const lapsContainer = document.getElementById("laps");
-    const lapTime = elapsed;
-    const diff = lapTime - lastLapTime;
-    lastLapTime = lapTime;
-
-    const row = document.createElement("div");
-    row.className = "lap-row";
-
-    const numSpan = document.createElement("span");
-    numSpan.textContent = `Runde ${lapCount}`;
-
-    const lapSpan = document.createElement("span");
-    lapSpan.textContent = formatTime(diff);
-
-    const totalSpan = document.createElement("span");
-    totalSpan.textContent = formatTime(lapTime);
-
-    row.appendChild(numSpan);
-    row.appendChild(lapSpan);
-    row.appendChild(totalSpan);
-
-    lapsContainer.prepend(row);
+    renderLaps();
 }
 
-function resetTimer() {
-    if (running) {
-        // Wenn laufend: iOS macht hier "Runde" statt "Reset" – wir bleiben aber bei Reset nur im Stopp-Zustand
-        lapTimer();
-        return;
-    }
+function resetAll() {
     elapsed = 0;
-    lapCount = 0;
-    lastLapTime = 0;
+    running = false;
+    laps = [];
+    lastLapTotal = 0;
     updateTimer();
-    document.getElementById("laps").innerHTML = '';
+    renderLaps();
+
+    const leftBtn = document.getElementById("leftBtn");
+    const rightBtn = document.getElementById("rightBtn");
+
+    leftBtn.textContent = "Zurücksetzen";
+    leftBtn.disabled = true;
+
+    rightBtn.textContent = "Start";
+    rightBtn.classList.remove("btn-danger");
+    rightBtn.classList.add("btn-primary");
+
+    clearInterval(timerInterval);
+    timerInterval = null;
 }
 
-document.getElementById("startBtn").onclick = toggleStartStop;
-document.getElementById("resetBtn").onclick = resetTimer;
+function handleLeftButton() {
+    if (running) {
+        // iOS: wenn läuft → Runde
+        addLap();
+    } else {
+        // iOS: wenn gestoppt → Zurücksetzen
+        resetAll();
+    }
+}
 
-// Optional: Doppeltippen auf Zeit = Runde (wie iOS-Gesten-Feeling, aber frei erfunden)
-document.getElementById("timer").ondblclick = lapTimer;
+function renderLaps() {
+    const lapsContainer = document.getElementById("laps");
+    lapsContainer.innerHTML = "";
+
+    if (laps.length === 0) return;
+
+    // schnellste & langsamste Runde bestimmen (nur wenn mehr als 1)
+    let minLap = Infinity;
+    let maxLap = -Infinity;
+    if (laps.length > 1) {
+        laps.forEach(l => {
+            if (l.lapTime < minLap) minLap = l.lapTime;
+            if (l.lapTime > maxLap) maxLap = l.lapTime;
+        });
+    }
+
+    // neueste Runde oben anzeigen
+    [...laps].reverse().forEach(lap => {
+        const row = document.createElement("div");
+        row.className = "lap-row";
+
+        const numSpan = document.createElement("span");
+        numSpan.textContent = `Runde ${lap.index}`;
+
+        const lapSpan = document.createElement("span");
+        lapSpan.textContent = formatTime(lap.lapTime);
+
+        const totalSpan = document.createElement("span");
+        totalSpan.textContent = formatTime(lap.totalTime);
+
+        // Farben wie iOS: schnellste grün, langsamste rot
+        if (laps.length > 1) {
+            if (lap.lapTime === minLap) {
+                lapSpan.classList.add("lap-fastest");
+            } else if (lap.lapTime === maxLap) {
+                lapSpan.classList.add("lap-slowest");
+            }
+        }
+
+        row.appendChild(numSpan);
+        row.appendChild(lapSpan);
+        row.appendChild(totalSpan);
+
+        lapsContainer.appendChild(row);
+    });
+}
+
+document.getElementById("rightBtn").onclick = toggleStartStop;
+document.getElementById("leftBtn").onclick = handleLeftButton;
+
+// Optional: Doppeltipp auf die Zeit = Runde (nur wenn läuft)
+document.getElementById("timer").ondblclick = () => {
+    if (running) addLap();
+};
 
 updateTimer();
 </script>
