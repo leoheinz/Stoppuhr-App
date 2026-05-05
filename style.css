@@ -62,6 +62,7 @@ body {
 .time-display {
     font-variant-numeric: tabular-nums;
     font-size: 85px;
+    font-weight: 200;
     text-align: center;
     margin-top: 24px;
     margin-bottom: 12px;
