@@ -71,7 +71,7 @@ function updateButtons() {
         // - wenn Zeit oder Runden vorhanden: links = Zurücksetzen
         // - sonst: links = Runde (disabled)
         if (elapsed > 0 || laps.length > 0) {
-            leftBtn.textContent = "Zurücksetzen";
+            leftBtn.textContent = "Reset";
             leftBtn.disabled = false;
         } else {
             leftBtn.textContent = "Runde";
