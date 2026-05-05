@@ -18,7 +18,7 @@ body {
     justify-content: center;
 }
 
-/* Wrapper für zentrierte Card (auf iPhone quasi Vollbild) */
+/* Wrapper */
 .app-wrapper {
     width: 100%;
     max-width: 480px;
@@ -69,14 +69,14 @@ body {
     color: #f9fafb;
 }
 
-/* Button-Reihe wie in iOS: links grau, rechts gelb/rot */
+/* Button-Reihe */
 .button-row {
     display: flex;
     gap: 16px;
     justify-content: center;
 }
 
-/* Buttons – flach, rund, iOS-Look */
+/* Buttons – rund, flach, iOS-Look */
 .btn {
     flex: 1;
     max-width: 160px;
@@ -101,28 +101,27 @@ body {
     cursor: default;
 }
 
-/* iOS-Tap-Effekt */
+/* Tap-Effekt */
 .btn:active:not(:disabled) {
     transform: scale(0.97);
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
-/* Primär (Start) – Gelb wie iOS */
-.btn-primary {
-    background-color: #f5c542;
-    color: #000;
-}
-
-/* Stopp-Zustand – Rot wie iOS */
-.btn-danger {
-    background-color: #ff3b30;
-    color: #fff;
-}
-
-/* Sekundär (Runde/Zurücksetzen) – Dunkelgrau */
+/* Linker Button: grau mit weißer Schrift */
 .btn-secondary {
     background-color: #1c1c1e;
     color: #f9fafb;
+}
+
+/* Rechter Button: Start = grün, Stopp = rot */
+.btn-start {
+    background-color: #30d158;   /* iOS Grün */
+    color: #e5ffe9;              /* hellgrün/weißlich */
+}
+
+.btn-stop {
+    background-color: #ff3b30;   /* iOS Rot */
+    color: #ffe5e3;              /* hellrot/weißlich */
 }
 
 /* Laps-Bereich */
@@ -181,11 +180,11 @@ body {
 
 /* schnellste / langsamste Runde wie iOS */
 .lap-fastest {
-    color: #32d74b; /* iOS Grün */
+    color: #30d158; /* iOS Grün */
 }
 
 .lap-slowest {
-    color: #ff453a; /* iOS Rot */
+    color: #ff3b30; /* iOS Rot */
 }
 
 /* Scrollbar minimal (nur WebKit) */

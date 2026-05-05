@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
     <title>Stoppuhr</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
 <div class="app-wrapper">
@@ -19,7 +19,7 @@
 
             <div class="button-row">
                 <button id="leftBtn" class="btn btn-secondary" disabled>Zurücksetzen</button>
-                <button id="rightBtn" class="btn btn-primary">Start</button>
+                <button id="rightBtn" class="btn btn-start">Start</button>
             </div>
 
             <div class="laps-container">
@@ -54,19 +54,33 @@ function updateTimer() {
     document.getElementById("timer").innerText = formatTime(elapsed);
 }
 
+function updateButtons() {
+    const leftBtn = document.getElementById("leftBtn");
+    const rightBtn = document.getElementById("rightBtn");
+
+    if (running) {
+        // läuft: links = Runde, rechts = Stopp (rot)
+        leftBtn.textContent = "Runde";
+        leftBtn.disabled = false;
+
+        rightBtn.textContent = "Stopp";
+        rightBtn.classList.remove("btn-start");
+        rightBtn.classList.add("btn-stop");
+    } else {
+        // gestoppt: links = Zurücksetzen (nur wenn es was zu löschen gibt), rechts = Start (grün)
+        leftBtn.textContent = "Zurücksetzen";
+        leftBtn.disabled = laps.length === 0 && elapsed === 0;
+
+        rightBtn.textContent = "Start";
+        rightBtn.classList.remove("btn-stop");
+        rightBtn.classList.add("btn-start");
+    }
+}
+
 function startTimer() {
     if (running) return;
     running = true;
-
-    const rightBtn = document.getElementById("rightBtn");
-    const leftBtn = document.getElementById("leftBtn");
-
-    rightBtn.textContent = "Stopp";
-    rightBtn.classList.remove("btn-primary");
-    rightBtn.classList.add("btn-danger");
-
-    leftBtn.textContent = "Runde";
-    leftBtn.disabled = false;
+    updateButtons();
 
     if (!timerInterval) {
         startTime = Date.now() - elapsed * 1000;
@@ -80,16 +94,7 @@ function startTimer() {
 function stopTimer() {
     if (!running) return;
     running = false;
-
-    const rightBtn = document.getElementById("rightBtn");
-    const leftBtn = document.getElementById("leftBtn");
-
-    rightBtn.textContent = "Start";
-    rightBtn.classList.remove("btn-danger");
-    rightBtn.classList.add("btn-primary");
-
-    leftBtn.textContent = "Zurücksetzen";
-    leftBtn.disabled = false;
+    updateButtons();
 
     clearInterval(timerInterval);
     timerInterval = null;
@@ -104,6 +109,8 @@ function toggleStartStop() {
 }
 
 function addLap() {
+    if (!running) return;
+
     const totalTime = elapsed;
     const lapTime = totalTime - lastLapTotal;
     lastLapTotal = totalTime;
@@ -112,25 +119,19 @@ function addLap() {
     laps.push({ index, lapTime, totalTime });
 
     renderLaps();
+    updateButtons();
 }
 
 function resetAll() {
+    if (running) return; // nur im Stopp-Zustand resetten
+
     elapsed = 0;
     running = false;
     laps = [];
     lastLapTotal = 0;
     updateTimer();
     renderLaps();
-
-    const leftBtn = document.getElementById("leftBtn");
-    const rightBtn = document.getElementById("rightBtn");
-
-    leftBtn.textContent = "Zurücksetzen";
-    leftBtn.disabled = true;
-
-    rightBtn.textContent = "Start";
-    rightBtn.classList.remove("btn-danger");
-    rightBtn.classList.add("btn-primary");
+    updateButtons();
 
     clearInterval(timerInterval);
     timerInterval = null;
@@ -138,10 +139,8 @@ function resetAll() {
 
 function handleLeftButton() {
     if (running) {
-        // iOS: wenn läuft → Runde
         addLap();
     } else {
-        // iOS: wenn gestoppt → Zurücksetzen
         resetAll();
     }
 }
@@ -176,7 +175,6 @@ function renderLaps() {
         const totalSpan = document.createElement("span");
         totalSpan.textContent = formatTime(lap.totalTime);
 
-        // Farben wie iOS: schnellste grün, langsamste rot
         if (laps.length > 1) {
             if (lap.lapTime === minLap) {
                 lapSpan.classList.add("lap-fastest");
@@ -202,6 +200,7 @@ document.getElementById("timer").ondblclick = () => {
 };
 
 updateTimer();
+updateButtons();
 </script>
 </body>
 </html>
