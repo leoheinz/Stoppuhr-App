@@ -1,4 +1,3 @@
-/* Globales Reset / Basis */
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
@@ -10,16 +9,20 @@ html, body {
     height: 100%;
 }
 
+/* Miami Vice Hintergrund: dunkles Blau + Neon-Glow */
 body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: radial-gradient(circle at top, #1f2933 0, #020617 55%, #000 100%);
+    background:
+        radial-gradient(circle at top, rgba(56, 189, 248, 0.35), transparent 55%),
+        radial-gradient(circle at bottom, rgba(236, 72, 153, 0.25), transparent 55%),
+        linear-gradient(135deg, #020617 0%, #020617 40%, #020617 100%);
     color: #f9fafb;
     display: flex;
     align-items: stretch;
     justify-content: center;
 }
 
-/* Wrapper, damit es auf Handy nicht am Rand klebt */
+/* Wrapper für zentrierte Card */
 .app-wrapper {
     width: 100%;
     max-width: 480px;
@@ -29,136 +32,158 @@ body {
     justify-content: center;
 }
 
-/* Card-Style */
+/* Hauptkarte im Neon-Style */
 .card {
     width: 100%;
-    background: rgba(15, 23, 42, 0.96);
-    border-radius: 18px;
+    background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent 55%),
+                radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.12), transparent 55%),
+                rgba(15, 23, 42, 0.96);
+    border-radius: 20px;
     padding: 18px 16px 14px;
     box-shadow:
-        0 14px 30px rgba(0, 0, 0, 0.7),
-        0 0 0 1px rgba(148, 163, 184, 0.18);
-    backdrop-filter: blur(14px);
+        0 18px 40px rgba(0, 0, 0, 0.85),
+        0 0 0 1px rgba(56, 189, 248, 0.25),
+        0 0 25px rgba(236, 72, 153, 0.35);
+    backdrop-filter: blur(18px);
     display: flex;
     flex-direction: column;
     max-height: 100%;
 }
 
-/* Titel */
+/* Titel im Miami Vice Look */
 .card h1 {
-    margin: 0 0 8px;
+    margin: 0 0 10px;
     font-size: 22px;
     text-align: center;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: #e5e7eb;
+    color: #a5f3fc;
+    text-shadow:
+        0 0 10px rgba(56, 189, 248, 0.7),
+        0 0 18px rgba(236, 72, 153, 0.6);
 }
 
-/* Timer-Anzeige */
+/* Timer-Anzeige – Neon-Türkis */
 #timer {
     font-variant-numeric: tabular-nums;
-    font-size: 52px;
+    font-size: 48px;
     text-align: center;
-    margin: 4px 0 14px;
-    letter-spacing: 0.06em;
-    color: #f97316;
-    text-shadow: 0 0 14px rgba(249, 115, 22, 0.45);
+    margin: 6px 0 16px;
+    letter-spacing: 0.18em;
+    color: #a5f3fc;
+    text-shadow:
+        0 0 10px rgba(56, 189, 248, 0.9),
+        0 0 24px rgba(236, 72, 153, 0.7);
+    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-/* Buttons */
+/* Button-Reihen */
 .button-row {
     display: flex;
     gap: 10px;
     margin-bottom: 8px;
 }
 
+/* Buttons im Miami Vice Neon-Style */
 .btn {
     flex: 1;
     padding: 10px 0;
     border-radius: 999px;
     border: none;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 700;
     cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    outline: none;
     transition:
         transform 0.08s ease-out,
         box-shadow 0.08s ease-out,
         background 0.15s ease-out,
         color 0.15s ease-out;
-    outline: none;
 }
 
+/* Button-States */
 .btn:active {
-    transform: translateY(1px) scale(0.98);
+    transform: translateY(1px) scale(0.97);
     box-shadow: none;
 }
 
-/* Button-Varianten */
+/* Start = Türkis */
 .btn.primary {
-    background: linear-gradient(135deg, #22c55e, #16a34a);
-    color: #0b1120;
-    box-shadow: 0 6px 14px rgba(34, 197, 94, 0.35);
+    background: radial-gradient(circle at 30% 20%, #22d3ee, #06b6d4);
+    color: #020617;
+    box-shadow: 0 8px 20px rgba(34, 211, 238, 0.6);
 }
 
 .btn.primary:hover {
-    background: linear-gradient(135deg, #4ade80, #22c55e);
+    background: radial-gradient(circle at 30% 20%, #a5f3fc, #22d3ee);
 }
 
+/* Stop = Pink */
 .btn.danger {
-    background: linear-gradient(135deg, #f97373, #ef4444);
-    color: #0b1120;
-    box-shadow: 0 6px 14px rgba(248, 113, 113, 0.35);
+    background: radial-gradient(circle at 30% 20%, #fb7185, #ec4899);
+    color: #020617;
+    box-shadow: 0 8px 20px rgba(236, 72, 153, 0.6);
 }
 
 .btn.danger:hover {
-    background: linear-gradient(135deg, #fecaca, #f97373);
+    background: radial-gradient(circle at 30% 20%, #fecdd3, #fb7185);
 }
 
+/* Lap = Lila/Pink-Mix */
 .btn.secondary {
-    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
-    color: #0b1120;
-    box-shadow: 0 6px 14px rgba(56, 189, 248, 0.35);
+    background: radial-gradient(circle at 30% 20%, #a855f7, #ec4899);
+    color: #020617;
+    box-shadow: 0 8px 20px rgba(168, 85, 247, 0.6);
 }
 
 .btn.secondary:hover {
-    background: linear-gradient(135deg, #7dd3fc, #38bdf8);
+    background: radial-gradient(circle at 30% 20%, #e9d5ff, #a855f7);
 }
 
+/* Reset = Ghost mit Neon-Rand */
 .btn.ghost {
     background: transparent;
     color: #e5e7eb;
-    border: 1px solid rgba(148, 163, 184, 0.7);
-    box-shadow: none;
+    border: 1px solid rgba(148, 163, 184, 0.8);
+    box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.8);
 }
 
 .btn.ghost:hover {
-    background: rgba(148, 163, 184, 0.12);
+    background: rgba(15, 23, 42, 0.8);
+    border-color: rgba(148, 163, 184, 1);
 }
 
-/* Laps-Bereich */
+/* Laps-Container */
 .laps-container {
-    margin-top: 10px;
-    border-radius: 14px;
+    margin-top: 12px;
+    border-radius: 16px;
     background: rgba(15, 23, 42, 0.96);
-    border: 1px solid rgba(148, 163, 184, 0.35);
+    border: 1px solid rgba(148, 163, 184, 0.4);
     display: flex;
     flex-direction: column;
     min-height: 120px;
-    max-height: 260px;
+    max-height: 230px;
     overflow: hidden;
+    box-shadow:
+        0 10px 24px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
 }
 
 /* Header über der Lap-Liste */
 .laps-header {
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    padding: 6px 12px;
-    font-size: 12px;
+    grid-template-columns: 0.8fr 1.6fr 1.6fr;
+    padding: 6px 10px;
+    font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #9ca3af;
-    border-bottom: 1px solid rgba(148, 163, 184, 0.4);
-    background: linear-gradient(to right, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.8));
+    letter-spacing: 0.16em;
+    color: #e0f2fe;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.55);
+    background: linear-gradient(90deg,
+        rgba(56, 189, 248, 0.25),
+        rgba(236, 72, 153, 0.25));
 }
 
 /* Scrollbare Liste */
@@ -169,9 +194,9 @@ body {
 /* Einzelne Lap-Zeile */
 .lap-row {
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    padding: 6px 12px;
-    font-size: 14px;
+    grid-template-columns: 0.8fr 1.6fr 1.6fr;
+    padding: 6px 10px;
+    font-size: 13px;
     font-variant-numeric: tabular-nums;
     align-items: center;
     border-bottom: 1px solid rgba(31, 41, 55, 0.9);
@@ -182,13 +207,17 @@ body {
     background: rgba(17, 24, 39, 0.98);
 }
 
-.lap-row span:first-child {
-    color: #9ca3af;
+.lap-row span:nth-child(1) {
+    color: #e0f2fe;
 }
 
-.lap-row span:last-child {
+.lap-row span:nth-child(2) {
+    color: #f9a8d4;
+}
+
+.lap-row span:nth-child(3) {
     text-align: right;
-    color: #e5e7eb;
+    color: #a5f3fc;
 }
 
 /* Scrollbar etwas hübscher (nur WebKit-Browser) */
@@ -201,39 +230,39 @@ body {
 }
 
 .laps-list::-webkit-scrollbar-thumb {
-    background: rgba(148, 163, 184, 0.7);
+    background: linear-gradient(#22d3ee, #ec4899);
     border-radius: 999px;
 }
 
-/* Kleine Screens (Smartphones) */
+/* Mobile-Optimierung */
 @media (max-width: 480px) {
     #timer {
-        font-size: 44px;
-        margin-bottom: 10px;
+        font-size: 40px;
+        margin-bottom: 12px;
     }
 
     .card {
         padding: 16px 12px 12px;
-        border-radius: 16px;
+        border-radius: 18px;
     }
 
     .btn {
-        font-size: 15px;
-        padding: 9px 0;
+        font-size: 12px;
+        padding: 8px 0;
     }
 
     .laps-container {
-        max-height: 220px;
+        max-height: 210px;
     }
 }
 
-/* Etwas mehr Platz auf größeren Screens */
+/* Größere Screens */
 @media (min-width: 768px) {
-    .card {
-        padding: 22px 20px 18px;
+    #timer {
+        font-size: 56px;
     }
 
-    #timer {
-        font-size: 60px;
+    .card {
+        padding: 22px 20px 18px;
     }
 }

@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-    <title>Stoppuhr</title>
+    <title>Miami Vice Stoppuhr</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="app-wrapper">
     <div class="card">
-        <h1>Stoppuhr</h1>
+        <h1>Miami Vice Stoppuhr</h1>
 
-        <div id="timer">0.00</div>
+        <div id="timer">00:00.00</div>
 
         <div class="button-row">
             <button id="startBtn" class="btn primary">Start</button>
@@ -25,8 +25,9 @@
 
         <div class="laps-container">
             <div class="laps-header">
-                <span>#</span>
-                <span>Zeit (s)</span>
+                <span>Lap</span>
+                <span>Zeit</span>
+                <span>Diff</span>
             </div>
             <div id="laps" class="laps-list"></div>
         </div>
@@ -38,9 +39,17 @@ let timerInterval = null;
 let startTime = null;
 let elapsed = 0;
 let lapCount = 0;
+let lastLapTime = 0;
+
+function formatTime(t) {
+    const minutes = Math.floor(t / 60);
+    const seconds = Math.floor(t % 60);
+    const hundredths = Math.floor((t * 100) % 100);
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}.${String(hundredths).padStart(2, "0")}`;
+}
 
 function updateTimer() {
-    document.getElementById("timer").innerText = elapsed.toFixed(2);
+    document.getElementById("timer").innerText = formatTime(elapsed);
 }
 
 function startTimer() {
@@ -61,7 +70,11 @@ function stopTimer() {
 function lapTimer() {
     if (!timerInterval) return;
     lapCount += 1;
+
     const lapsContainer = document.getElementById("laps");
+    const lapTime = elapsed;
+    const diff = lapTime - lastLapTime;
+    lastLapTime = lapTime;
 
     const row = document.createElement("div");
     row.className = "lap-row";
@@ -70,11 +83,16 @@ function lapTimer() {
     numSpan.textContent = lapCount.toString().padStart(2, "0");
 
     const timeSpan = document.createElement("span");
-    timeSpan.textContent = elapsed.toFixed(2);
+    timeSpan.textContent = formatTime(lapTime);
+
+    const diffSpan = document.createElement("span");
+    diffSpan.textContent = "+" + formatTime(diff);
 
     row.appendChild(numSpan);
     row.appendChild(timeSpan);
-    lapsContainer.prepend(row); // neueste Lap oben
+    row.appendChild(diffSpan);
+
+    lapsContainer.prepend(row);
 }
 
 function resetTimer() {
@@ -82,6 +100,7 @@ function resetTimer() {
     timerInterval = null;
     elapsed = 0;
     lapCount = 0;
+    lastLapTime = 0;
     updateTimer();
     startTime = null;
     document.getElementById("laps").innerHTML = '';
