@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
     <title>Stoppuhr</title>
-    <link rel="stylesheet" href="style.css?v=5">
+    <link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
 <div class="app-wrapper">
@@ -18,7 +18,7 @@
             <div id="timer" class="time-display">00:00.00</div>
 
             <div class="button-row">
-                <button id="leftBtn" class="btn btn-secondary" disabled>Zurücksetzen</button>
+                <button id="leftBtn" class="btn btn-secondary" disabled>Runde</button>
                 <button id="rightBtn" class="btn btn-start">Start</button>
             </div>
 
@@ -58,17 +58,18 @@ function updateButtons() {
     const leftBtn = document.getElementById("leftBtn");
     const rightBtn = document.getElementById("rightBtn");
 
+    // Linker Button heißt immer "Runde"
+    leftBtn.textContent = "Runde";
+
     if (running) {
-        // läuft: links = Runde, rechts = Stopp (rot)
-        leftBtn.textContent = "Runde";
+        // läuft: Runde aktiv, Start/Stopp = Stopp (rot)
         leftBtn.disabled = false;
 
         rightBtn.textContent = "Stopp";
         rightBtn.classList.remove("btn-start");
         rightBtn.classList.add("btn-stop");
     } else {
-        // gestoppt: links = Zurücksetzen (nur wenn es was zu löschen gibt), rechts = Start (grün)
-        leftBtn.textContent = "Zurücksetzen";
+        // gestoppt: Runde nur aktiv, wenn es schon Runden/Zeit gibt
         leftBtn.disabled = laps.length === 0 && elapsed === 0;
 
         rightBtn.textContent = "Start";
@@ -123,8 +124,8 @@ function addLap() {
 }
 
 function resetAll() {
-    if (running) return; // nur im Stopp-Zustand resetten
-
+    // In dieser Variante: Reset nur über "Runde" nicht vorgesehen,
+    // falls du später doch einen Reset-Button willst, können wir das ergänzen.
     elapsed = 0;
     running = false;
     laps = [];
@@ -138,11 +139,8 @@ function resetAll() {
 }
 
 function handleLeftButton() {
-    if (running) {
-        addLap();
-    } else {
-        resetAll();
-    }
+    // Linker Button ist immer "Runde"
+    addLap();
 }
 
 function renderLaps() {
