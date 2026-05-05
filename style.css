@@ -61,7 +61,7 @@ body {
 /* Zeit-Anzeige – groß */
 .time-display {
     font-variant-numeric: tabular-nums;
-    font-size: 90px;
+    font-size: 85px;
     text-align: center;
     margin-top: 24px;
     margin-bottom: 12px;
@@ -83,7 +83,7 @@ body {
     height: 130px;
     border-radius: 50%;      /* Kreis */
     border: none;
-    font-size: 20px;
+    font-size: 30px;
     font-weight: 600;
     cursor: pointer;
     outline: none;
@@ -119,13 +119,13 @@ body {
 
 /* Rechter Button: Start = grün, Stopp = rot */
 .btn-start {
-    background-color: #30d158;   /* iOS Grün */
-    color: #e5ffe9;
+    background-color: #207536;   /* iOS Grün */
+    color: #30d158;
 }
 
 .btn-stop {
-    background-color: #ff3b30;   /* iOS Rot */
-    color: #ffe5e3;
+    background-color: #7c1a15;   /* iOS Rot */
+    color: #ff3b30;
 }
 
 /* Laps-Bereich */
@@ -219,11 +219,11 @@ body {
     .btn {
         width: 110px;
         height: 110px;
-        font-size: 16px;
+        font-size: 25px;
     }
 
     .button-row {
-        gap: 50px;
+        gap: 100px;
     }
 
     .laps-container {
