@@ -55,13 +55,13 @@ body {
 .content {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 28px;
 }
 
 /* Zeit-Anzeige – groß */
 .time-display {
     font-variant-numeric: tabular-nums;
-    font-size: 80px;
+    font-size: 90px;
     text-align: center;
     margin-top: 24px;
     margin-bottom: 12px;
@@ -72,19 +72,19 @@ body {
 /* Button-Reihe */
 .button-row {
     display: flex;
-    gap: 40px; /* Abstand zwischen den Kreisen */
+    gap: 40px;               /* Abstand zwischen Kreisen */
     justify-content: center;
     align-items: center;
 }
 
-/* Buttons – echte Kreise */
+/* Buttons – große Kreise */
 .btn {
-    width: 90px;              /* gleiche Breite */
-    height: 90px;             /* und Höhe -> Kreis */
-    border-radius: 50%;       /* macht es rund */
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;      /* Kreis */
     border: none;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 600;
     cursor: pointer;
     outline: none;
     transition:
@@ -212,14 +212,14 @@ body {
     }
 
     .time-display {
-        font-size: 64px;
+        font-size: 70px;
         margin-top: 18px;
     }
 
     .btn {
-        width: 80px;
-        height: 80px;
-        font-size: 15px;
+        width: 95px;
+        height: 95px;
+        font-size: 16px;
     }
 
     .button-row {
@@ -234,7 +234,7 @@ body {
 /* Größere Screens */
 @media (min-width: 768px) {
     .time-display {
-        font-size: 90px;
+        font-size: 100px;
     }
 
     .card {
