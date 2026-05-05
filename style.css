@@ -9,181 +9,136 @@ html, body {
     height: 100%;
 }
 
-/* Miami Vice Hintergrund: dunkles Blau + Neon-Glow */
 body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background:
-        radial-gradient(circle at top, rgba(56, 189, 248, 0.35), transparent 55%),
-        radial-gradient(circle at bottom, rgba(236, 72, 153, 0.25), transparent 55%),
-        linear-gradient(135deg, #020617 0%, #020617 40%, #020617 100%);
-    color: #f9fafb;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    background-color: #000;
+    color: #fff;
     display: flex;
     align-items: stretch;
     justify-content: center;
 }
 
-/* Wrapper für zentrierte Card */
+/* Wrapper für zentrierte Card (auf iPhone quasi Vollbild) */
 .app-wrapper {
     width: 100%;
     max-width: 480px;
-    padding: 12px;
+    padding: 0;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
 }
 
-/* Hauptkarte im Neon-Style */
+/* Hauptcontainer */
 .card {
     width: 100%;
-    background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent 55%),
-                radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.12), transparent 55%),
-                rgba(15, 23, 42, 0.96);
-    border-radius: 20px;
-    padding: 18px 16px 14px;
-    box-shadow:
-        0 18px 40px rgba(0, 0, 0, 0.85),
-        0 0 0 1px rgba(56, 189, 248, 0.25),
-        0 0 25px rgba(236, 72, 153, 0.35);
-    backdrop-filter: blur(18px);
+    background-color: #000;
     display: flex;
     flex-direction: column;
-    max-height: 100%;
+    padding: 12px 16px 16px;
 }
 
-/* Titel im Miami Vice Look */
-.card h1 {
-    margin: 0 0 10px;
-    font-size: 22px;
-    text-align: center;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #a5f3fc;
-    text-shadow:
-        0 0 10px rgba(56, 189, 248, 0.7),
-        0 0 18px rgba(236, 72, 153, 0.6);
+/* Header wie iOS-Navigation-Bar */
+.header {
+    padding: 4px 0 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Timer-Anzeige – Neon-Türkis */
-#timer {
+.header-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff;
+}
+
+/* Content-Bereich */
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Zeit-Anzeige – iOS-Style */
+.time-display {
     font-variant-numeric: tabular-nums;
-    font-size: 48px;
+    font-size: 60px;
     text-align: center;
-    margin: 6px 0 16px;
-    letter-spacing: 0.18em;
-    color: #a5f3fc;
-    text-shadow:
-        0 0 10px rgba(56, 189, 248, 0.9),
-        0 0 24px rgba(236, 72, 153, 0.7);
-    font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    margin-top: 24px;
+    margin-bottom: 8px;
+    letter-spacing: 0.06em;
+    color: #f9fafb;
 }
 
-/* Button-Reihen */
+/* Button-Reihe wie in iOS: links grau, rechts gelb */
 .button-row {
     display: flex;
-    gap: 10px;
-    margin-bottom: 8px;
+    gap: 16px;
+    justify-content: center;
 }
 
-/* Buttons im Miami Vice Neon-Style */
+/* Buttons – flach, rund, iOS-Look */
 .btn {
     flex: 1;
+    max-width: 160px;
     padding: 10px 0;
     border-radius: 999px;
     border: none;
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 15px;
+    font-weight: 500;
     cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
     outline: none;
     transition:
+        background-color 0.15s ease-out,
+        color 0.15s ease-out,
         transform 0.08s ease-out,
-        box-shadow 0.08s ease-out,
-        background 0.15s ease-out,
-        color 0.15s ease-out;
+        box-shadow 0.08s ease-out;
 }
 
-/* Button-States */
+/* iOS-Tap-Effekt */
 .btn:active {
-    transform: translateY(1px) scale(0.97);
-    box-shadow: none;
+    transform: scale(0.97);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
-/* Start = Türkis */
-.btn.primary {
-    background: radial-gradient(circle at 30% 20%, #22d3ee, #06b6d4);
-    color: #020617;
-    box-shadow: 0 8px 20px rgba(34, 211, 238, 0.6);
+/* Primär (Start/Stopp) – Gelb wie iOS */
+.btn-primary {
+    background-color: #f5c542;
+    color: #000;
 }
 
-.btn.primary:hover {
-    background: radial-gradient(circle at 30% 20%, #a5f3fc, #22d3ee);
+/* Stopp-Zustand – Rot wie iOS */
+.btn-danger {
+    background-color: #ff3b30;
+    color: #fff;
 }
 
-/* Stop = Pink */
-.btn.danger {
-    background: radial-gradient(circle at 30% 20%, #fb7185, #ec4899);
-    color: #020617;
-    box-shadow: 0 8px 20px rgba(236, 72, 153, 0.6);
+/* Sekundär (Zurücksetzen) – Dunkelgrau */
+.btn-secondary {
+    background-color: #1c1c1e;
+    color: #f9fafb;
 }
 
-.btn.danger:hover {
-    background: radial-gradient(circle at 30% 20%, #fecdd3, #fb7185);
-}
-
-/* Lap = Lila/Pink-Mix */
-.btn.secondary {
-    background: radial-gradient(circle at 30% 20%, #a855f7, #ec4899);
-    color: #020617;
-    box-shadow: 0 8px 20px rgba(168, 85, 247, 0.6);
-}
-
-.btn.secondary:hover {
-    background: radial-gradient(circle at 30% 20%, #e9d5ff, #a855f7);
-}
-
-/* Reset = Ghost mit Neon-Rand */
-.btn.ghost {
-    background: transparent;
-    color: #e5e7eb;
-    border: 1px solid rgba(148, 163, 184, 0.8);
-    box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.8);
-}
-
-.btn.ghost:hover {
-    background: rgba(15, 23, 42, 0.8);
-    border-color: rgba(148, 163, 184, 1);
-}
-
-/* Laps-Container */
+/* Laps-Bereich */
 .laps-container {
-    margin-top: 12px;
-    border-radius: 16px;
-    background: rgba(15, 23, 42, 0.96);
-    border: 1px solid rgba(148, 163, 184, 0.4);
+    margin-top: 8px;
+    border-radius: 12px;
+    background-color: #000;
+    border: 1px solid #1c1c1e;
     display: flex;
     flex-direction: column;
     min-height: 120px;
-    max-height: 230px;
+    max-height: 260px;
     overflow: hidden;
-    box-shadow:
-        0 10px 24px rgba(0, 0, 0, 0.7),
-        0 0 0 1px rgba(15, 23, 42, 0.9);
 }
 
 /* Header über der Lap-Liste */
 .laps-header {
     display: grid;
-    grid-template-columns: 0.8fr 1.6fr 1.6fr;
-    padding: 6px 10px;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: #e0f2fe;
-    border-bottom: 1px solid rgba(148, 163, 184, 0.55);
-    background: linear-gradient(90deg,
-        rgba(56, 189, 248, 0.25),
-        rgba(236, 72, 153, 0.25));
+    grid-template-columns: 1.2fr 1.2fr 1.2fr;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: #8e8e93;
+    border-bottom: 1px solid #1c1c1e;
 }
 
 /* Scrollbare Liste */
@@ -191,38 +146,39 @@ body {
     overflow-y: auto;
 }
 
-/* Einzelne Lap-Zeile */
+/* Einzelne Lap-Zeile – wie iOS-Tabellenzeilen */
 .lap-row {
     display: grid;
-    grid-template-columns: 0.8fr 1.6fr 1.6fr;
-    padding: 6px 10px;
-    font-size: 13px;
+    grid-template-columns: 1.2fr 1.2fr 1.2fr;
+    padding: 6px 12px;
+    font-size: 15px;
     font-variant-numeric: tabular-nums;
     align-items: center;
-    border-bottom: 1px solid rgba(31, 41, 55, 0.9);
-    background: rgba(15, 23, 42, 0.98);
+    border-bottom: 1px solid #1c1c1e;
+    background-color: #000;
 }
 
 .lap-row:nth-child(odd) {
-    background: rgba(17, 24, 39, 0.98);
+    background-color: #050505;
 }
 
 .lap-row span:nth-child(1) {
-    color: #e0f2fe;
+    color: #f9fafb;
 }
 
 .lap-row span:nth-child(2) {
-    color: #f9a8d4;
+    text-align: right;
+    color: #f9fafb;
 }
 
 .lap-row span:nth-child(3) {
     text-align: right;
-    color: #a5f3fc;
+    color: #f9fafb;
 }
 
-/* Scrollbar etwas hübscher (nur WebKit-Browser) */
+/* Scrollbar minimal (nur WebKit) */
 .laps-list::-webkit-scrollbar {
-    width: 5px;
+    width: 4px;
 }
 
 .laps-list::-webkit-scrollbar-track {
@@ -230,39 +186,39 @@ body {
 }
 
 .laps-list::-webkit-scrollbar-thumb {
-    background: linear-gradient(#22d3ee, #ec4899);
+    background: #3a3a3c;
     border-radius: 999px;
 }
 
 /* Mobile-Optimierung */
 @media (max-width: 480px) {
-    #timer {
-        font-size: 40px;
-        margin-bottom: 12px;
+    .card {
+        padding: 8px 12px 12px;
     }
 
-    .card {
-        padding: 16px 12px 12px;
-        border-radius: 18px;
+    .time-display {
+        font-size: 48px;
+        margin-top: 16px;
     }
 
     .btn {
-        font-size: 12px;
-        padding: 8px 0;
+        font-size: 14px;
+        padding: 9px 0;
     }
 
     .laps-container {
-        max-height: 210px;
+        max-height: 220px;
     }
 }
 
 /* Größere Screens */
 @media (min-width: 768px) {
-    #timer {
-        font-size: 56px;
+    .time-display {
+        font-size: 64px;
     }
 
     .card {
-        padding: 22px 20px 18px;
+        max-width: 420px;
+        margin: 0 auto;
     }
 }

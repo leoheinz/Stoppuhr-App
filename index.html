@@ -10,27 +10,27 @@
 <body>
 <div class="app-wrapper">
     <div class="card">
-        <h1>Stoppuhr</h1>
+        <header class="header">
+            <div class="header-title">Stoppuhr</div>
+        </header>
 
-        <div id="timer">00:00.00</div>
+        <main class="content">
+            <div id="timer" class="time-display">00:00.00</div>
 
-        <div class="button-row">
-            <button id="startBtn" class="btn primary">Start</button>
-            <button id="stopBtn" class="btn danger">Stop</button>
-        </div>
-        <div class="button-row">
-            <button id="lapBtn" class="btn secondary">Lap</button>
-            <button id="resetBtn" class="btn ghost">Reset</button>
-        </div>
-
-        <div class="laps-container">
-            <div class="laps-header">
-                <span>Lap</span>
-                <span>Zeit</span>
-                <span>Diff</span>
+            <div class="button-row">
+                <button id="resetBtn" class="btn btn-secondary">Zurücksetzen</button>
+                <button id="startBtn" class="btn btn-primary">Start</button>
             </div>
-            <div id="laps" class="laps-list"></div>
-        </div>
+
+            <div class="laps-container">
+                <div class="laps-header">
+                    <span>Runde</span>
+                    <span>Rundenzeit</span>
+                    <span>Gesamt</span>
+                </div>
+                <div id="laps" class="laps-list"></div>
+            </div>
+        </main>
     </div>
 </div>
 
@@ -40,6 +40,7 @@ let startTime = null;
 let elapsed = 0;
 let lapCount = 0;
 let lastLapTime = 0;
+let running = false;
 
 function formatTime(t) {
     const minutes = Math.floor(t / 60);
@@ -53,6 +54,13 @@ function updateTimer() {
 }
 
 function startTimer() {
+    if (running) return;
+    running = true;
+    const startBtn = document.getElementById("startBtn");
+    startBtn.textContent = "Stopp";
+    startBtn.classList.remove("btn-primary");
+    startBtn.classList.add("btn-danger");
+
     if (!timerInterval) {
         startTime = Date.now() - elapsed * 1000;
         timerInterval = setInterval(() => {
@@ -63,12 +71,28 @@ function startTimer() {
 }
 
 function stopTimer() {
+    if (!running) return;
+    running = false;
+    const startBtn = document.getElementById("startBtn");
+    startBtn.textContent = "Start";
+    startBtn.classList.remove("btn-danger");
+    startBtn.classList.add("btn-primary");
+
     clearInterval(timerInterval);
     timerInterval = null;
 }
 
+function toggleStartStop() {
+    if (running) {
+        stopTimer();
+    } else {
+        startTimer();
+    }
+}
+
 function lapTimer() {
-    if (!timerInterval) return;
+    if (!running) return;
+
     lapCount += 1;
 
     const lapsContainer = document.getElementById("laps");
@@ -80,36 +104,39 @@ function lapTimer() {
     row.className = "lap-row";
 
     const numSpan = document.createElement("span");
-    numSpan.textContent = lapCount.toString().padStart(2, "0");
+    numSpan.textContent = `Runde ${lapCount}`;
 
-    const timeSpan = document.createElement("span");
-    timeSpan.textContent = formatTime(lapTime);
+    const lapSpan = document.createElement("span");
+    lapSpan.textContent = formatTime(diff);
 
-    const diffSpan = document.createElement("span");
-    diffSpan.textContent = "+" + formatTime(diff);
+    const totalSpan = document.createElement("span");
+    totalSpan.textContent = formatTime(lapTime);
 
     row.appendChild(numSpan);
-    row.appendChild(timeSpan);
-    row.appendChild(diffSpan);
+    row.appendChild(lapSpan);
+    row.appendChild(totalSpan);
 
     lapsContainer.prepend(row);
 }
 
 function resetTimer() {
-    clearInterval(timerInterval);
-    timerInterval = null;
+    if (running) {
+        // Wenn laufend: iOS macht hier "Runde" statt "Reset" – wir bleiben aber bei Reset nur im Stopp-Zustand
+        lapTimer();
+        return;
+    }
     elapsed = 0;
     lapCount = 0;
     lastLapTime = 0;
     updateTimer();
-    startTime = null;
     document.getElementById("laps").innerHTML = '';
 }
 
-document.getElementById("startBtn").onclick = startTimer;
-document.getElementById("stopBtn").onclick = stopTimer;
-document.getElementById("lapBtn").onclick = lapTimer;
+document.getElementById("startBtn").onclick = toggleStartStop;
 document.getElementById("resetBtn").onclick = resetTimer;
+
+// Optional: Doppeltippen auf Zeit = Runde (wie iOS-Gesten-Feeling, aber frei erfunden)
+document.getElementById("timer").ondblclick = lapTimer;
 
 updateTimer();
 </script>
