@@ -2,7 +2,8 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
     <title>Stoppuhr</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -16,6 +17,8 @@
         <div class="button-row">
             <button id="startBtn" class="btn primary">Start</button>
             <button id="stopBtn" class="btn danger">Stop</button>
+        </div>
+        <div class="button-row">
             <button id="lapBtn" class="btn secondary">Lap</button>
             <button id="resetBtn" class="btn ghost">Reset</button>
         </div>
@@ -89,7 +92,6 @@ document.getElementById("stopBtn").onclick = stopTimer;
 document.getElementById("lapBtn").onclick = lapTimer;
 document.getElementById("resetBtn").onclick = resetTimer;
 
-// Initial anzeigen
 updateTimer();
 </script>
 </body>
