@@ -213,7 +213,7 @@ body {
     }
 
     .time-display {
-        font-size: 100px;
+        font-size: 80px;
         margin-top: 18px;
     }
 
@@ -235,7 +235,7 @@ body {
 /* Größere Screens */
 @media (min-width: 768px) {
     .time-display {
-        font-size: 120px;
+        font-size: 100px;
     }
 
     .card {
